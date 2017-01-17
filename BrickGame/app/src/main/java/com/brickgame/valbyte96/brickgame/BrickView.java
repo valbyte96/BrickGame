@@ -1,6 +1,8 @@
 package com.brickgame.valbyte96.brickgame;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,8 +19,8 @@ import android.view.View;
 
 public class BrickView extends View {
 
-    private Paint bgPaint;
 
+    private Paint bgPaint;
 
     public BrickView(Context context) {
         super(context);
@@ -29,6 +31,7 @@ public class BrickView extends View {
         super(context, attrs);
         init();
     }
+
 
     public BrickView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
