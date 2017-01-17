@@ -62,6 +62,7 @@ public class BrickView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawRect(0,0,getWidth(),getHeight(),bgPaint);
+
+      //  canvas.drawRect(0,0,getWidth(),getHeight(),bgPaint);
     }
 }
