@@ -10,8 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.brickgame.valbyte96.brickgame.MainActivity">
 
+    <com.brickgame.valbyte96.brickgame.BrickView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/brick_view"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!" />
+
+
 </RelativeLayout>
