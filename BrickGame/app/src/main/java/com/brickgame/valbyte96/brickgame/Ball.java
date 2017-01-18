@@ -17,7 +17,6 @@ public class Ball {
         this.x+=dx;
         this.y+=dy;
     }
-
     public float getX(){
         return this.x;
     }
