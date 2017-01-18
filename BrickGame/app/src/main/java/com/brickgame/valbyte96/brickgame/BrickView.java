@@ -23,6 +23,7 @@ public class BrickView extends View {
     private Paint bPaint;
     private Paddle mPaddle;
     private Ball mBall;
+    private ScoreBoard mBoard;
     private float dx;
     private float dy;
 
@@ -54,10 +55,13 @@ public class BrickView extends View {
         bgPaint.setColor(Color.rgb(0,0,0));
         bPaint = new Paint();
         bPaint.setColor(Color.rgb(200,0,0));
+
         mPaddle = new Paddle(200,650);
         mBall = new Ball(270,380);
+        mBoard=new ScoreBoard(300,25);
 
-        dx=2;
+
+        dx=2; //@TODO change to random ints
         dy=2;
 
 
@@ -83,6 +87,7 @@ public class BrickView extends View {
         //draw circle and rectangle
         canvas.drawRect(mPaddle.getX(),mPaddle.getY(),mPaddle.getX()+100,mPaddle.getY()+50,bgPaint);
         canvas.drawCircle(mBall.getX(),mBall.getY(),15,bPaint);
+        mBoard.draw(canvas,bgPaint);
 
         mBall.move(dx,dy);//move ball
 

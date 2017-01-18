@@ -25,10 +25,4 @@ public class Ball {
         return this.y;
     }
 
-
-//    public void reflectX(){
-//
-//    }
-
-
 }
