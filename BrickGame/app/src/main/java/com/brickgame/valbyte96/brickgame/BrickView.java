@@ -64,11 +64,9 @@ public class BrickView extends View {
 
         brickArray=new Brick[4];
         for (int i=0;i<brickArray.length;i++){
-            Brick brick = new Brick(i*10,i*10,1);
+            Brick brick = new Brick(i*50,25,1);
             brickArray[i]=brick;
         }
-
-
         score=0;
         dx=2; //@TODO change to random ints
         dy=2;
