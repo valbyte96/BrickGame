@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -23,7 +24,11 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void start(){
-        startActivity(new Intent(this, Level1.class));
+        EditText field = (EditText) findViewById(R.id.playername);
+        String username = field.getText().toString();
+        Intent newIntent = new Intent(this, MainActivity.class);
+        newIntent.putExtra("username",username);
+        startActivity(newIntent);
     }
 
 

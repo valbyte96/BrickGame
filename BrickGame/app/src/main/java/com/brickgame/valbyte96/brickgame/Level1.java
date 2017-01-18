@@ -16,7 +16,7 @@ import android.view.View;
 
 public class Level1 extends View {
     // array of bricks that make up the level view
-    private Brick[] bricksArr;
+    private Brick[] bricksArr = new Brick[5];
     Paint bgPaint;
 
     public Level1(Context context) {
@@ -43,8 +43,8 @@ public class Level1 extends View {
     private void init(){
         bgPaint = new Paint();
         bgPaint.setColor(Color.rgb(0,0,0));
-        for(int i = 0; i <=5;i++ ){
-            bricksArr[i] = new Brick(20.0f,20.0f, Color.BLUE);
+        for(int i = 0; i <250;i+=50 ){
+            bricksArr[i/50] = new Brick((20+i),(20+i), Color.BLUE);
         }
     }
 
@@ -53,7 +53,7 @@ public class Level1 extends View {
 
         for(Brick brick: bricksArr){
             bgPaint.setColor(brick.getColor());
-            canvas.drawRect(brick.getX(),brick.getY(),brick.getX()+10,brick.getY()+10,bgPaint);
+            canvas.drawRect(brick.getX(),brick.getY(),brick.getX()+50,brick.getY()+50,bgPaint);
         }
 
         postInvalidateOnAnimation();
