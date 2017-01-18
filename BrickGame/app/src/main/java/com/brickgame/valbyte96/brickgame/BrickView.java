@@ -20,6 +20,7 @@ public class BrickView extends View {
 
 
     private Paint bgPaint;
+    private Paint brickPaint;
     private Paint bPaint;
     private Paddle mPaddle;
     private Ball mBall;
@@ -29,6 +30,8 @@ public class BrickView extends View {
     private int score;
     private Brick[] brickArray;
 
+    // Array of bricks
+    private Brick[] bricksArr = new Brick[5];
 
     public BrickView(Context context) {
         super(context);
@@ -57,6 +60,7 @@ public class BrickView extends View {
         bgPaint.setColor(Color.rgb(0,0,0));
         bPaint = new Paint();
         bPaint.setColor(Color.rgb(200,0,0));
+        brickPaint = new Paint();
 
         mPaddle = new Paddle(200,650);
         mBall = new Ball(270,380);
@@ -68,6 +72,11 @@ public class BrickView extends View {
             brickArray[i]=brick;
         }
 
+        // Bricks
+        for(int i = 0; i <250;i+=50 ){
+            bricksArr[i/50] = new Brick((20+i),(20+i), Color.BLUE);
+        }
+        // Bricks
 
         score=0;
         dx=2; //@TODO change to random ints
@@ -121,6 +130,13 @@ public class BrickView extends View {
         if (mBall.getY()<=0||mBall.getY()>=getHeight()){
             dy=-dy;
         }
+
+        // Bricks
+        for(Brick brick: bricksArr){
+            brickPaint.setColor(brick.getColor());
+            canvas.drawRect(brick.getX(),brick.getY(),brick.getX()+50,brick.getY()+50,brickPaint);
+        }
+        // Bricks
 
         postInvalidateOnAnimation();
 
