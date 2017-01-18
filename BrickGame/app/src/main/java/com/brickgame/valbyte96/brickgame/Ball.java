@@ -17,7 +17,6 @@ public class Ball {
         this.x+=dx;
         this.y+=dy;
     }
-
     public float getX(){
         return this.x;
     }
@@ -25,6 +24,7 @@ public class Ball {
     public float getY(){
         return this.y;
     }
+
 
 //    public void reflectX(){
 //
