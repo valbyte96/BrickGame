@@ -26,6 +26,8 @@ public class BrickView extends View {
     private ScoreBoard mBoard;
     private float dx;
     private float dy;
+    private int score;
+    private Brick[] brickArray;
 
 
     public BrickView(Context context) {
@@ -58,9 +60,16 @@ public class BrickView extends View {
 
         mPaddle = new Paddle(200,650);
         mBall = new Ball(270,380);
-        mBoard=new ScoreBoard(300,25);
+        mBoard=new ScoreBoard(300,30);
+
+        brickArray=new Brick[4];
+        for (int i=0;i<brickArray.length;i++){
+            Brick brick = new Brick(i*10,i*10,1);
+            brickArray[i]=brick;
+        }
 
 
+        score=0;
         dx=2; //@TODO change to random ints
         dy=2;
 
@@ -87,7 +96,12 @@ public class BrickView extends View {
         //draw circle and rectangle
         canvas.drawRect(mPaddle.getX(),mPaddle.getY(),mPaddle.getX()+100,mPaddle.getY()+50,bgPaint);
         canvas.drawCircle(mBall.getX(),mBall.getY(),15,bPaint);
-        mBoard.draw(canvas,bgPaint);
+        mBoard.draw(canvas,bgPaint,score);
+
+        for (int i=0;i<brickArray.length;i++){
+            brickArray[i].draw(canvas,bPaint);
+        }
+
 
         mBall.move(dx,dy);//move ball
 
@@ -96,10 +110,12 @@ public class BrickView extends View {
         if (mBall.getX()>=mPaddle.getX()&&mBall.getX()<=mPaddle.getX()+100&&
                 mBall.getY()>=mPaddle.getY()&&mBall.getY()<=mPaddle.getY()){
             dy=-dy;
+            score+=100;
         }
         //too far left or right
         if (mBall.getX()<=0||mBall.getX()>=getWidth()){
             dx=-dx;
+
         }
         //too far up or down
         if (mBall.getY()<=0||mBall.getY()>=getHeight()){
