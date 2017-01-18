@@ -19,15 +19,11 @@ public class ScoreBoard {
         this.score=0;
     }
 
-    public void update(int score){
+    //function that updates the scoreboard and draws it
+    public void draw(Canvas canvas,Paint paint,int score){
         this.score=score;
-    }
-
-    public void draw(Canvas canvas,Paint paint){
-        //canvas.drawRect(leftX,leftY,leftX+200,leftY+100,paint);
+        paint.setTextSize(30);
         canvas.drawText("Score: "+Integer.toString(score),leftX,leftY,paint);
-
-
     }
 
 
