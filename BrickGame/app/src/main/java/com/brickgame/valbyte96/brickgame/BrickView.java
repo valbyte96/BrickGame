@@ -2,7 +2,6 @@ package com.brickgame.valbyte96.brickgame;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,6 +20,12 @@ public class BrickView extends View {
 
 
     private Paint bgPaint;
+    private Paint bPaint;
+    private Paddle mPaddle;
+    private Ball mBall;
+    private float dx;
+    private float dy;
+
 
     public BrickView(Context context) {
         super(context);
@@ -47,7 +52,16 @@ public class BrickView extends View {
     private void init(){
         bgPaint = new Paint();
         bgPaint.setColor(Color.rgb(0,0,0));
-       setOnTouchListener(new OnTouchListener() {
+        bPaint = new Paint();
+        bPaint.setColor(Color.rgb(200,0,0));
+        mPaddle = new Paddle(200,650);
+        mBall = new Ball(270,380);
+
+        dx=2;
+        dy=2;
+
+
+        setOnTouchListener(new OnTouchListener() {
            @Override
            public boolean onTouch(View v, MotionEvent motionEvent) {
                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
@@ -55,6 +69,7 @@ public class BrickView extends View {
                }
                if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
                    Log.d("test", "x: " + motionEvent.getX() + ", y: " + motionEvent.getY());
+                   mPaddle.move(motionEvent.getX());
                    return true;
                }
                return false;
@@ -65,7 +80,28 @@ public class BrickView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        //draw circle and rectangle
+        canvas.drawRect(mPaddle.getX(),mPaddle.getY(),mPaddle.getX()+100,mPaddle.getY()+50,bgPaint);
+        canvas.drawCircle(mBall.getX(),mBall.getY(),15,bPaint);
 
-      //  canvas.drawRect(0,0,getWidth(),getHeight(),bgPaint);
+        mBall.move(dx,dy);//move ball
+
+        //conditions for reflecting
+        //checks to see if it has hit the paddle
+        if (mBall.getX()>=mPaddle.getX()&&mBall.getX()<=mPaddle.getX()+100&&
+                mBall.getY()>=mPaddle.getY()&&mBall.getY()<=mPaddle.getY()){
+            dy=-dy;
+        }
+        //too far left or right
+        if (mBall.getX()<=0||mBall.getX()>=getWidth()){
+            dx=-dx;
+        }
+        //too far up or down
+        if (mBall.getY()<=0||mBall.getY()>=getHeight()){
+            dy=-dy;
+        }
+
+        postInvalidateOnAnimation();
+
     }
 }
