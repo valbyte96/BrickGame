@@ -16,5 +16,12 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true" />
 
+    <!--<com.brickgame.valbyte96.brickgame.Level1-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:id="@+id/content_level1"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_alignParentTop="true"/>-->
+
     </RelativeLayout>
 

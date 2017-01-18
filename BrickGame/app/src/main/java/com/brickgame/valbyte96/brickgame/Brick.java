@@ -32,6 +32,6 @@ public class Brick {
     }
 
     public void draw(Canvas canvas, Paint paint){
-        canvas.drawRect(x,y,x+30,y+20,paint);
+        canvas.drawRect(x,y,x+60,y+40,paint);
     }
 }

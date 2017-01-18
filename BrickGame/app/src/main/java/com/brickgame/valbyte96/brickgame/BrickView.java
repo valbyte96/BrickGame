@@ -20,6 +20,7 @@ public class BrickView extends View {
 
 
     private Paint bgPaint;
+    private Paint brickPaint;
     private Paint bPaint;
     private Paddle mPaddle;
     private Ball mBall;
@@ -27,7 +28,10 @@ public class BrickView extends View {
     private float dx;
     private float dy;
     private int score;
-    private Brick[] brickArray;
+    private int nRows=5;
+    private int nCols=6;
+    private Brick[][] brickArray=new Brick[nRows][nCols];
+
 
 
     public BrickView(Context context) {
@@ -57,16 +61,22 @@ public class BrickView extends View {
         bgPaint.setColor(Color.rgb(0,0,0));
         bPaint = new Paint();
         bPaint.setColor(Color.rgb(200,0,0));
+        brickPaint = new Paint();
 
         mPaddle = new Paddle(200,650);
         mBall = new Ball(270,380);
         mBoard=new ScoreBoard(300,30);
 
-        brickArray=new Brick[4];
-        for (int i=0;i<brickArray.length;i++){
-            Brick brick = new Brick(i*50,25,1);
-            brickArray[i]=brick;
+
+
+        for(int i =0; i<nRows; i++) {
+            for (int j = 0; j < nCols; j++) {
+                Brick brick = new Brick(j * 90 + 15, i * 60+50, 1);
+                brickArray[i][j] = brick;
+            }
         }
+
+
         score=0;
         dx=2; //@TODO change to random ints
         dy=2;
@@ -96,8 +106,11 @@ public class BrickView extends View {
         canvas.drawCircle(mBall.getX(),mBall.getY(),15,bPaint);
         mBoard.draw(canvas,bgPaint,score);
 
-        for (int i=0;i<brickArray.length;i++){
-            brickArray[i].draw(canvas,bPaint);
+
+        for (int i=0;i<nRows;i++){
+            for(int j=0;j<nCols; j++) {
+                brickArray[i][j].draw(canvas, bPaint);
+            }
         }
 
 
@@ -106,7 +119,7 @@ public class BrickView extends View {
         //conditions for reflecting
         //checks to see if it has hit the paddle
         if (mBall.getX()>=mPaddle.getX()&&mBall.getX()<=mPaddle.getX()+100&&
-                mBall.getY()>=mPaddle.getY()&&mBall.getY()<=mPaddle.getY()){
+                mBall.getY()>=mPaddle.getY()&&mBall.getY()<=mPaddle.getY()+50){
             dy=-dy;
             score+=100;
         }
@@ -119,6 +132,7 @@ public class BrickView extends View {
         if (mBall.getY()<=0||mBall.getY()>=getHeight()){
             dy=-dy;
         }
+
 
         postInvalidateOnAnimation();
 
