@@ -11,5 +11,4 @@ public class Paddle {
     public Paddle(int x, int y, Canvas canvas){
         Rect body = new Rect(x,y,x+100,y+50);
     }
-
 }
