@@ -21,6 +21,8 @@ public class BrickView extends View {
 
 
     private Paint bgPaint;
+    private Paddle mPaddle;
+    protected Canvas canvas;
 
     public BrickView(Context context) {
         super(context);
@@ -47,6 +49,8 @@ public class BrickView extends View {
     private void init(){
         bgPaint = new Paint();
         bgPaint.setColor(Color.rgb(0,0,0));
+        mPaddle = new Paddle(200,650);
+
        setOnTouchListener(new OnTouchListener() {
            @Override
            public boolean onTouch(View v, MotionEvent motionEvent) {
@@ -55,6 +59,7 @@ public class BrickView extends View {
                }
                if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
                    Log.d("test", "x: " + motionEvent.getX() + ", y: " + motionEvent.getY());
+                   mPaddle.move(motionEvent.getX());
                    return true;
                }
                return false;
@@ -66,6 +71,8 @@ public class BrickView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-      //  canvas.drawRect(0,0,getWidth(),getHeight(),bgPaint);
+        canvas.drawRect(mPaddle.getX(),mPaddle.getY(),mPaddle.getX()+100,mPaddle.getY()+50,bgPaint);
+        postInvalidateOnAnimation();
+
     }
 }
