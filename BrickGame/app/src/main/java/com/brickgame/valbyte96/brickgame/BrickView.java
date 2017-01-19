@@ -92,7 +92,7 @@ public class BrickView extends View {
 
         //SET UP TOUCH LISTENER
         setOnTouchListener(new OnTouchListener() {
-           @Override
+            @Override
            public boolean onTouch(View v, MotionEvent motionEvent) {
                if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
                    return true;
@@ -103,9 +103,9 @@ public class BrickView extends View {
                }
                return false;
            }
-         }
-       );
-   }
+       }
+        );
+    }
 
     //<--LEVEL SET UP-->
     //sets up level 1
@@ -180,11 +180,12 @@ public class BrickView extends View {
         levelThreeArray[0]=brick0;
 
     }
+
     //<--PLAYS GAME-->
     @Override
     protected void onDraw(Canvas canvas) { //GOHERE
         //increments levels and resets ball
-        if (undrawn == 30 && level == 1 || undrawn == 42 && level == 2) {
+        if (undrawn == 2 && level == 1 || undrawn == 2 && level == 2) {
             dx += 1;
             dy += 1;
             undrawn = 0;
@@ -192,8 +193,8 @@ public class BrickView extends View {
             mBall.setLocation(mPaddle.getX() + 50, mPaddle.getY());
 
         }
-        if(level==4){ //check to see if user has won
-            gameOver();//@TODO change this to user wins
+        if(level==3){ //check to see if user has won
+            gameWon();//@TODO change this to user wins
         }
         else if(lives<0){//check to see if user has lost
             gameOver();
@@ -277,6 +278,7 @@ public class BrickView extends View {
                                 dy = -randomY();
                             }
 
+
                         }
                     }
                 }
@@ -297,6 +299,7 @@ public class BrickView extends View {
                         else if(dy>0){
                             dy = -randomY();
                         }
+
                     }
                 }
             }
@@ -308,7 +311,12 @@ public class BrickView extends View {
         Intent newIntent = new Intent(this.getContext(), GameOver.class);
         // to pass username on to gameOver layout
         newIntent.putExtra("username",username);
-        newIntent.putExtra("totalScore",score);
+        newIntent.putExtra("totalScore", score);
+        this.getContext().startActivity(newIntent);
+    }
+
+    private void gameWon(){
+        Intent newIntent = new Intent(this.getContext(), WinActivity.class);
         this.getContext().startActivity(newIntent);
     }
 

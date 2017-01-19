@@ -8,22 +8,27 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
-
-        <activity android:name=".MainActivity" android:screenOrientation="portrait" ></activity>
-        <activity android:name=".WelcomeActivity" android:screenOrientation="portrait" >
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WelcomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"></action>
+                <action android:name="android.intent.action.MAIN" >
+                </action>
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GameOver" android:screenOrientation="portrait" />
+        <activity
+            android:name=".GameOver"
+            android:screenOrientation="portrait" />
         android:name=".Level1"
         android:label="@string/title_activity_level1"
         android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity android:name=".WinActivity"></activity>
     </application>
 
 </manifest>
