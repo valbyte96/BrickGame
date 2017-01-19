@@ -1,5 +1,8 @@
 package com.brickgame.valbyte96.brickgame;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 /**
  * Created by demouser on 1/17/17.
  */
@@ -23,6 +26,14 @@ public class Ball {
 
     public float getY(){
         return this.y;
+    }
+    public void draw(Canvas canvas, Paint paint){
+        canvas.drawCircle(x,y,15,paint);
+
+    }
+    public void setLocation(float x, float y){
+        this.x=x;
+        this.y=y-15;
     }
 
 }

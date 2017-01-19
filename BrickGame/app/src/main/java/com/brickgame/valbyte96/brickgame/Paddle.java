@@ -33,5 +33,18 @@ public class Paddle {
         return this.y;
     }
 
+    public void draw(Canvas canvas, Paint paint){
+        canvas.drawRect(x,y,x+100,y+50,paint);
+
+    }
+
+    public boolean reflect(float bX, float bY){
+
+        if (bX>=x&&bX<=x+100&& bY>=y&&bY<=y+50){
+            return true;
+        }
+        return false;
+    }
+
 
 }

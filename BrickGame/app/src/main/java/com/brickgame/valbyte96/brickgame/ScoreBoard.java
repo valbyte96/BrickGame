@@ -12,6 +12,8 @@ public class ScoreBoard {
     public float leftX;
     public float leftY;
     public int score;
+    public int level;
+    public int lives;
 
     public ScoreBoard(float x, float y){
         this.leftX=x;
@@ -20,10 +22,11 @@ public class ScoreBoard {
     }
 
     //function that updates the scoreboard and draws it
-    public void draw(Canvas canvas,Paint paint,int score){
+    public void draw(Canvas canvas,Paint paint,int score, int level, int lives){
         this.score=score;
         paint.setTextSize(30);
-        canvas.drawText("Score: "+Integer.toString(score),leftX,leftY,paint);
+        canvas.drawText("Level: "+Integer.toString(level)+"   Score: "+Integer.toString(score)+"   lives: "+Integer.toString(lives),leftX,leftY,paint);
+
     }
 
 

@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Random;
+
 /**
  * Created by demouser on 1/17/17.
  */
@@ -21,18 +23,24 @@ public class BrickView extends View {
 
     private String username;
 
-    private Paint bgPaint;
-    private Paint brickPaint;
-    private Paint bPaint;
+    private Paint mPaint;
     private Paddle mPaddle;
     private Ball mBall;
     private ScoreBoard mBoard;
     private float dx;
     private float dy;
-    private int score;
-    private int nRows=5;
-    private int nCols=6;
-    private Brick[][] brickArray=new Brick[nRows][nCols];
+    private int score = 0;
+    private int nRows = 5;
+    private int nCols = 6;
+    private int level = 1;
+    private Brick[][] brickArray = new Brick[nRows][nCols];
+    private Brick[] levelTwoArray = new Brick[42];
+    private int[] colorArray={Color.rgb(200,0,0),Color.rgb(0,200,0),Color.rgb(0,0,200),Color.rgb(255,222,0)};
+    private Random ran = new Random();
+    private int undrawn=0;
+    private int lives=10;
+
+
 
 
 
@@ -59,29 +67,25 @@ public class BrickView extends View {
     }
 
     private void init(){
-        bgPaint = new Paint();
-        bgPaint.setColor(Color.rgb(0,0,0));
-        bPaint = new Paint();
-        bPaint.setColor(Color.rgb(200,0,0));
-        brickPaint = new Paint();
 
+        mPaint = new Paint();
         mPaddle = new Paddle(200,650);
-        mBall = new Ball(270,380);
-        mBoard=new ScoreBoard(300,30);
+        mBall = new Ball(250,630);
+        mBoard=new ScoreBoard(75,30);
 
 
-
+        //SET UP LEVEL 1
         for(int i =0; i<nRows; i++) {
             for (int j = 0; j < nCols; j++) {
-                Brick brick = new Brick(j * 90 + 15, i * 60+50, 1);
+                Brick brick = new Brick(j * 90 + 15, i * 60+50, ran.nextInt(4));
                 brickArray[i][j] = brick;
             }
         }
+        levelTwoSetUp();
 
 
-        score=0;
-        dx=2; //@TODO change to random ints
-        dy=2;
+        dx=ran.nextInt(2)+1;
+        dy=ran.nextInt(3)+4;
 
 
         setOnTouchListener(new OnTouchListener() {
@@ -101,27 +105,126 @@ public class BrickView extends View {
        );
    }
 
+    //sets up level 2
+    public void levelTwoSetUp(){
+        Brick brick0 = new Brick(2 * 72 + 52, 50, 0);
+        levelTwoArray[0]=brick0;
+        Brick brick1 = new Brick(3 * 72 + 52, 50, 0);
+        levelTwoArray[1]=brick1;
+
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 100, 0);
+            levelTwoArray[i+2]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 150, 0);
+            levelTwoArray[i+6]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 200, 0);
+            levelTwoArray[i+10]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 250, 0);
+            levelTwoArray[i+14]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 300, 0);
+            levelTwoArray[i+18]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 350, 0);
+            levelTwoArray[i+22]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 400, 0);
+            levelTwoArray[i+26]=brick;
+        }
+
+        //legs
+        Brick brick2 = new Brick(2 * 100 - 22, 450, 0);
+        levelTwoArray[30]=brick2;
+        Brick brick3 = new Brick(3 * 100 - 22, 450, 0);
+        levelTwoArray[31]=brick3;
+
+        Brick brick4 = new Brick(2 * 100 - 22, 500, 0);
+        levelTwoArray[32]=brick4;
+        Brick brick5 = new Brick(3 * 100 - 22, 500, 0);
+        levelTwoArray[33]=brick5;
+        //arms
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(40, 175+50*i, 0);
+            levelTwoArray[i+34]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(53+3*122, 175+50*i, 0);
+            levelTwoArray[i+38]=brick;
+        }
+
+
+
+
+
+
+
+
+
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         //draw circle and rectangle
-        canvas.drawRect(mPaddle.getX(),mPaddle.getY(),mPaddle.getX()+100,mPaddle.getY()+50,bgPaint);
-        canvas.drawCircle(mBall.getX(),mBall.getY(),15,bPaint);
-        mBoard.draw(canvas,bgPaint,score);
+        mPaint.setColor(colorArray[2]);
+        mPaddle.draw(canvas,mPaint);
+        mPaint.setColor(colorArray[3]);
+        mBall.draw(canvas, mPaint);
+        mPaint.setColor(Color.rgb(0,0,0));
+        mBoard.draw(canvas,mPaint,score,level,lives);
 
-
-        for (int i=0;i<nRows;i++){
-            for(int j=0;j<nCols; j++) {
-                brickArray[i][j].draw(canvas, bPaint);
+        if (undrawn==30&&level==1||undrawn==42&&level==2){
+            dx+=1;
+            dy+=1;
+            undrawn=0;
+            level+=1;
+            for (int i=0;i<nRows;i++){
+                for(int j=0;j<nCols; j++) {
+                    brickArray[i][j].resetDraw();
+                }
             }
+            mBall.setLocation(mPaddle.getX()+50,mPaddle.getY());
+
         }
+
+        //DRAW THE BOARD
+        if(level==1){
+
+            //draw the object
+            for (int i=0;i<nRows;i++){
+                for(int j=0;j<nCols; j++) {
+                    mPaint.setColor(colorArray[brickArray[i][j].getColor()]);
+                    brickArray[i][j].draw(canvas, mPaint);
+                }
+            }
+
+        }
+        else if (level==2){
+            for (int i=0; i<levelTwoArray.length;i++){
+                mPaint.setColor(Color.rgb(191,239,0));
+                levelTwoArray[i].draw(canvas, mPaint);
+
+            }
+
+        }
+
+
+
 
 
         mBall.move(dx,dy);//move ball
 
         //conditions for reflecting
         //checks to see if it has hit the paddle
-        if (mBall.getX()>=mPaddle.getX()&&mBall.getX()<=mPaddle.getX()+100&&
-                mBall.getY()>=mPaddle.getY()&&mBall.getY()<=mPaddle.getY()+50){
+        if (mPaddle.reflect(mBall.getX(),mBall.getY())){
             dy=-dy;
             score+=100;
         }
@@ -131,15 +234,33 @@ public class BrickView extends View {
 
         }
         //too far up or down
-        if (mBall.getY()<=0||mBall.getY()>=getHeight()){
+        if (mBall.getY()<=0){
             dy=-dy;
         }
-        for (int i=0;i<nRows;i++){
-            for(int j=0;j<nCols; j++) {
-                if(brickArray[i][j].isTouched(mBall.getX(),mBall.getY())) {
-                    dy = -dy;
-                    score += 200;
+        if (mBall.getY()>=getHeight()){
+            mBall.setLocation(mPaddle.getX()+50,mPaddle.getY());
+            lives=lives-1;
+            dy=-dy;
+        }
+
+
+        if (level==1){
+            for (int i=0;i<nRows;i++) {
+                for (int j = 0; j < nCols; j++) {
+                    if (brickArray[i][j].isTouched(mBall.getX(), mBall.getY())) {
+                        score += 200;
+                        undrawn += 1;
+                    }
                 }
+            }
+        }
+        else if(level==2){
+            for (int i=0;i<levelTwoArray.length;i++){
+                if (levelTwoArray[i].isTouched(mBall.getX(), mBall.getY())) {
+                    score += 200;
+                    undrawn += 1;
+                }
+
             }
         }
         
