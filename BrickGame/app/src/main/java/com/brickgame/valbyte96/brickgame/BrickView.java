@@ -7,9 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
+import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -30,14 +32,15 @@ public class BrickView extends View {
     private int score = 0;
     private int nRows = 5;
     private int nCols = 6;
-    private int level = 3;
+    private int level = 1;
     private Brick[][] brickArray = new Brick[nRows][nCols];
     private Brick[] levelTwoArray = new Brick[42];
     private Brick[] levelThreeArray = new Brick[1];//GOHERE
     private int[] colorArray={Color.rgb(200,0,0),Color.rgb(0,200,0),Color.rgb(0,0,200),Color.rgb(255,222,0)};
     private Random ran = new Random();
     private int undrawn=0;
-    private int lives=15;
+    private int lives=1;
+    private Vibrator vib;
 
 
 
@@ -64,13 +67,15 @@ public class BrickView extends View {
         init();
     }
 
-    //<---INITIALIZER-->
+    //<---INITIALIZER--->
     private void init(){
+
         //initialize objects
         mPaint = new Paint();
-        mPaddle = new Paddle(200,650);
+        mPaddle = new Paddle(200,650,getContext());
         mBall = new Ball(250,630);
         mBoard=new ScoreBoard(75,30);
+        vib=(Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
 
 
         //SET UP LEVEL 1
@@ -233,7 +238,7 @@ public class BrickView extends View {
             //REFLECTING CONDITIONS
             //checks to see if it has hit the paddle
             if (mPaddle.reflect(mBall.getX(), mBall.getY())) {
-                dy = -dy;
+                dy = -randomY();
                 score += 100;
             }
             //too far left or right
@@ -249,6 +254,7 @@ public class BrickView extends View {
                 mBall.setLocation(mPaddle.getX() + 50, mPaddle.getY());
                 lives = lives - 1;
                 dy = -dy;
+                vib.vibrate(200);
             }
 
             //BRICK CONDITIONS
@@ -258,8 +264,19 @@ public class BrickView extends View {
                         if (brickArray[i][j].isTouched(mBall.getX(), mBall.getY())) {
                             score += 200;
                             undrawn += 1;
-                            dx = -randomX();
-                            dy = -randomY();
+                            if(dx<0){
+                                dx = randomX();
+                            }
+                            else if(dx>0){
+                                dx = -randomX();
+                            }
+                            if (dy<0){
+                                dy = randomX();
+                            }
+                            else if(dy>0){
+                                dy = -randomY();
+                            }
+
                         }
                     }
                 }
@@ -268,10 +285,19 @@ public class BrickView extends View {
                     if (levelTwoArray[i].isTouched(mBall.getX(), mBall.getY())) {
                         score += 200;
                         undrawn += 1;
-                        dx = -randomX();
-                        dy = -randomY();
+                        if(dx<0){
+                            dx = randomX();
+                        }
+                        else if(dx>0){
+                            dx = -randomX();
+                        }
+                        if (dy<0){
+                            dy = randomX();
+                        }
+                        else if(dy>0){
+                            dy = -randomY();
+                        }
                     }
-
                 }
             }
             postInvalidateOnAnimation();
@@ -292,15 +318,13 @@ public class BrickView extends View {
 
     public int randomX(){
         Random ran = new Random();
-        return ran.nextInt(2)+2;
+        return ran.nextInt(2)+2+level;
+
 
     }
     public int randomY(){
         Random ran = new Random();
-        return ran.nextInt(3)+4;
-
-
-
+        return ran.nextInt(3)+4+level;
     }
 
 
