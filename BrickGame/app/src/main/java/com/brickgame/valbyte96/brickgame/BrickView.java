@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
@@ -39,8 +40,9 @@ public class BrickView extends View {
     private int[] colorArray={Color.rgb(200,0,0),Color.rgb(0,200,0),Color.rgb(0,0,200),Color.rgb(255,222,0)};
     private Random ran = new Random();
     private int undrawn=0;
-    private int lives=1;
+    private int lives=10;
     private Vibrator vib;
+    private MediaPlayer mp;
 
 
 
@@ -185,7 +187,7 @@ public class BrickView extends View {
     @Override
     protected void onDraw(Canvas canvas) { //GOHERE
         //increments levels and resets ball
-        if (undrawn == 2 && level == 1 || undrawn == 2 && level == 2) {
+        if (undrawn == 30 && level == 1 || undrawn == 42 && level == 2) {
             dx += 1;
             dy += 1;
             undrawn = 0;
@@ -207,6 +209,8 @@ public class BrickView extends View {
             mBall.draw(canvas, mPaint);
             mPaint.setColor(Color.rgb(0, 0, 0));
             mBoard.draw(canvas, mPaint, score, level, lives);
+            mp = MediaPlayer.create(getContext(), R.raw.small);
+
 
 
             //DRAW THE BOARD
@@ -263,6 +267,7 @@ public class BrickView extends View {
                 for (int i = 0; i < nRows; i++) {
                     for (int j = 0; j < nCols; j++) {
                         if (brickArray[i][j].isTouched(mBall.getX(), mBall.getY())) {
+//                            mp.start();
                             score += 200;
                             undrawn += 1;
                             if(dx<0){
