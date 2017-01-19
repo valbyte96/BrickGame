@@ -32,6 +32,7 @@ public class BrickView extends View {
     private int nCols=6;
     private int level =1;
     private Brick[][] brickArray=new Brick[nRows][nCols];
+    private Brick[] levelTwoArray = new Brick[42];
     private int[] colorArray={Color.rgb(200,0,0),Color.rgb(0,200,0),Color.rgb(0,0,200),Color.rgb(255,222,0)};
     private Random ran = new Random();
     private int undrawn=0;
@@ -67,17 +68,19 @@ public class BrickView extends View {
 
         mPaint = new Paint();
         mPaddle = new Paddle(200,650);
-        mBall = new Ball(270,380);
+        mBall = new Ball(250,630);
         mBoard=new ScoreBoard(75,30);
 
 
 
+        //SET UP LEVEL 1
         for(int i =0; i<nRows; i++) {
             for (int j = 0; j < nCols; j++) {
                 Brick brick = new Brick(j * 90 + 15, i * 60+50, ran.nextInt(4));
                 brickArray[i][j] = brick;
             }
         }
+        levelTwoSetUp();
 
 
         dx=ran.nextInt(2)+1;
@@ -101,6 +104,72 @@ public class BrickView extends View {
        );
    }
 
+    //sets up level 2
+    public void levelTwoSetUp(){
+        Brick brick0 = new Brick(2 * 72 + 52, 50, 0);
+        levelTwoArray[0]=brick0;
+        Brick brick1 = new Brick(3 * 72 + 52, 50, 0);
+        levelTwoArray[1]=brick1;
+
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 100, 0);
+            levelTwoArray[i+2]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 150, 0);
+            levelTwoArray[i+6]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 200, 0);
+            levelTwoArray[i+10]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 250, 0);
+            levelTwoArray[i+14]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 300, 0);
+            levelTwoArray[i+18]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 350, 0);
+            levelTwoArray[i+22]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(i * 72 + 122, 400, 0);
+            levelTwoArray[i+26]=brick;
+        }
+
+        //legs
+        Brick brick2 = new Brick(2 * 100 - 22, 450, 0);
+        levelTwoArray[30]=brick2;
+        Brick brick3 = new Brick(3 * 100 - 22, 450, 0);
+        levelTwoArray[31]=brick3;
+
+        Brick brick4 = new Brick(2 * 100 - 22, 500, 0);
+        levelTwoArray[32]=brick4;
+        Brick brick5 = new Brick(3 * 100 - 22, 500, 0);
+        levelTwoArray[33]=brick5;
+        //arms
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(40, 175+50*i, 0);
+            levelTwoArray[i+34]=brick;
+        }
+        for(int i=0;i<4;i++){
+            Brick brick = new Brick(53+3*122, 175+50*i, 0);
+            levelTwoArray[i+38]=brick;
+        }
+
+
+
+
+
+
+
+
+
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         //draw circle and rectangle
@@ -111,7 +180,9 @@ public class BrickView extends View {
         mPaint.setColor(Color.rgb(0,0,0));
         mBoard.draw(canvas,mPaint,score,level,lives);
 
-        if (undrawn==10){
+        if (undrawn==30&&level==1||undrawn==42&&level==2){
+            dx+=1;
+            dy+=1;
             undrawn=0;
             level+=1;
             for (int i=0;i<nRows;i++){
@@ -120,18 +191,33 @@ public class BrickView extends View {
                 }
             }
             mBall.setLocation(mPaddle.getX()+50,mPaddle.getY());
-            dx+=1;
-            dy+=1;
+
         }
 
+        //DRAW THE BOARD
+        if(level==1){
 
-
-        for (int i=0;i<nRows;i++){
-            for(int j=0;j<nCols; j++) {
-                mPaint.setColor(colorArray[brickArray[i][j].getColor()]);
-                brickArray[i][j].draw(canvas, mPaint);
+            //draw the object
+            for (int i=0;i<nRows;i++){
+                for(int j=0;j<nCols; j++) {
+                    mPaint.setColor(colorArray[brickArray[i][j].getColor()]);
+                    brickArray[i][j].draw(canvas, mPaint);
+                }
             }
+
         }
+        else if (level==2){
+            for (int i=0; i<levelTwoArray.length;i++){
+                mPaint.setColor(Color.rgb(191,239,0));
+                levelTwoArray[i].draw(canvas, mPaint);
+
+            }
+
+        }
+
+
+
+
 
         mBall.move(dx,dy);//move ball
 
@@ -157,13 +243,23 @@ public class BrickView extends View {
         }
 
 
-
-        for (int i=0;i<nRows;i++){
-            for(int j=0;j<nCols; j++) {
-                if(brickArray[i][j].isTouched(mBall.getX(),mBall.getY())){
-                    score+=200;
-                    undrawn+=1;
+        if (level==1){
+            for (int i=0;i<nRows;i++) {
+                for (int j = 0; j < nCols; j++) {
+                    if (brickArray[i][j].isTouched(mBall.getX(), mBall.getY())) {
+                        score += 200;
+                        undrawn += 1;
+                    }
                 }
+            }
+        }
+        else if(level==2){
+            for (int i=0;i<levelTwoArray.length;i++){
+                if (levelTwoArray[i].isTouched(mBall.getX(), mBall.getY())) {
+                    score += 200;
+                    undrawn += 1;
+                }
+
             }
         }
 

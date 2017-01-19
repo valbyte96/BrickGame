@@ -33,7 +33,7 @@ public class Ball {
     }
     public void setLocation(float x, float y){
         this.x=x;
-        this.y=y;
+        this.y=y-15;
     }
 
 }
