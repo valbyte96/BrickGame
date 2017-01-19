@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView1"
-        android:textColor="#8B0000"
+        android:textColor="#C80000"
         android:textSize="40sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView2"
-        android:textColor="#8B0000"
+        android:textColor="#C80000"
         android:textSize="40sp"
         android:layout_below="@id/textView1"
         android:layout_centerHorizontal="true"
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView3"
-        android:textColor="#8B0000"
+        android:textColor="#C80000"
         android:textSize="45sp"
         android:layout_below="@id/textView2"
         android:layout_centerHorizontal="true"
@@ -53,6 +53,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
         android:id="@+id/instruction"
+        android:textColor="#00C800"
         />
 
     <TextView
@@ -82,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:id="@+id/startButton"
-        android:textColor="#8B0000"
+        android:textColor="#0000C8"
         android:layout_below="@+id/playername"
         android:layout_centerHorizontal="true" />
 

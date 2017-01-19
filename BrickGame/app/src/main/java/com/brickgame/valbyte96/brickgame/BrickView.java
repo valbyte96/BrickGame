@@ -38,7 +38,7 @@ public class BrickView extends View {
     private int[] colorArray={Color.rgb(200,0,0),Color.rgb(0,200,0),Color.rgb(0,0,200),Color.rgb(255,222,0)};
     private Random ran = new Random();
     private int undrawn=0;
-    private int lives=10;
+    private int lives=0;
 
 
 
@@ -95,7 +95,6 @@ public class BrickView extends View {
                    return true;
                }
                if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                   Log.d("test", "x: " + motionEvent.getX() + ", y: " + motionEvent.getY());
                    mPaddle.move(motionEvent.getX());
                    return true;
                }
@@ -173,6 +172,10 @@ public class BrickView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        if(lives == -1){
+            gameOver();
+        }
+        else{
         //draw circle and rectangle
         mPaint.setColor(colorArray[2]);
         mPaddle.draw(canvas,mPaint);
@@ -250,6 +253,8 @@ public class BrickView extends View {
                     if (brickArray[i][j].isTouched(mBall.getX(), mBall.getY())) {
                         score += 200;
                         undrawn += 1;
+                        dx= -dx;
+                        dy= -dy;
                     }
                 }
             }
@@ -259,27 +264,26 @@ public class BrickView extends View {
                 if (levelTwoArray[i].isTouched(mBall.getX(), mBall.getY())) {
                     score += 200;
                     undrawn += 1;
+                    dx= -dx;
+                    dy= -dy;
                 }
 
             }
+        }         postInvalidateOnAnimation();
         }
-        
-        if(mBall.getY() > mPaddle.getY() + 7){
-            //Log.d("below", String.valueOf(mBall.getY()));
-            gameOver();
-        }
-        postInvalidateOnAnimation();
+
     }
 
     private void gameOver(){
         Intent newIntent = new Intent(this.getContext(), GameOver.class);
         // to pass username on to gameOver layout
         newIntent.putExtra("username",username);
+        newIntent.putExtra("totalScore",score);
         this.getContext().startActivity(newIntent);
     }
 
-    public int getScore(){
-        return score;
+    public void setUserName(String name){
+        username = name;
     }
 
 }

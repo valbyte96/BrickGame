@@ -8,8 +8,6 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button startButton;
-    View.OnClickListener handler;
     String username;
 
     @Override
@@ -19,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
+
+        BrickView brickView = (BrickView) findViewById(R.id.brick_view);
+        brickView.setUserName(username);
     }
 
 }

@@ -16,7 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GameOver"/>
+        <activity android:name=".GameOver">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"></action>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
             android:name=".Level1"
             android:label="@string/title_activity_level1"
             android:theme="@style/AppTheme.NoActionBar" />
