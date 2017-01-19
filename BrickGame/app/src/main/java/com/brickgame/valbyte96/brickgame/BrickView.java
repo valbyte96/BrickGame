@@ -30,14 +30,14 @@ public class BrickView extends View {
     private int score = 0;
     private int nRows = 5;
     private int nCols = 6;
-    private int level = 1;
+    private int level = 3;
     private Brick[][] brickArray = new Brick[nRows][nCols];
     private Brick[] levelTwoArray = new Brick[42];
     private Brick[] levelThreeArray = new Brick[1];//GOHERE
     private int[] colorArray={Color.rgb(200,0,0),Color.rgb(0,200,0),Color.rgb(0,0,200),Color.rgb(255,222,0)};
     private Random ran = new Random();
     private int undrawn=0;
-    private int lives=5;
+    private int lives=15;
 
 
 
@@ -169,15 +169,16 @@ public class BrickView extends View {
             levelTwoArray[i+38]=brick;
         }
     }
-    public void levelThreeSetUp(){
-        Brick brick0 = new Brick(2 * 72 + 52, 50, 0);
+    //level three setup
+    public void levelThreeSetUp(){//goh
+        Brick brick0 = new Brick(3 * 72 + 52, 50, 0);
         levelThreeArray[0]=brick0;
 
     }
 
     //<--PLAYS GAME-->
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(Canvas canvas) { //GOHERE
         //increments levels and resets ball
         if (undrawn == 30 && level == 1 || undrawn == 42 && level == 2) {
             dx += 1;
@@ -218,6 +219,13 @@ public class BrickView extends View {
                     mPaint.setColor(Color.rgb(191, 239, 0));
                     levelTwoArray[i].draw(canvas, mPaint);
                 }
+            }
+            else if(level==3){
+                for (int i = 0; i < levelThreeArray.length; i++) {
+                    mPaint.setColor(Color.rgb(191, 239, 0));
+                    levelTwoArray[i].draw(canvas, mPaint);
+                }
+
             }
 
 
@@ -284,7 +292,7 @@ public class BrickView extends View {
 
     public int randomX(){
         Random ran = new Random();
-        return ran.nextInt(2)+1;
+        return ran.nextInt(2)+2;
 
     }
     public int randomY(){
