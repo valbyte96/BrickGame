@@ -49,4 +49,7 @@ public class Brick {
             canvas.drawRect(x, y, x + 60, y + 40, paint);
         }
     }
+    public void resetDraw(){
+        this.drawn=true;
+    }
 }

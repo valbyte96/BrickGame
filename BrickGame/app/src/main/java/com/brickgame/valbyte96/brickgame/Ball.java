@@ -31,5 +31,9 @@ public class Ball {
         canvas.drawCircle(x,y,15,paint);
 
     }
+    public void setLocation(float x, float y){
+        this.x=x;
+        this.y=y;
+    }
 
 }

@@ -35,6 +35,7 @@ public class BrickView extends View {
     private int[] colorArray={Color.rgb(200,0,0),Color.rgb(0,200,0),Color.rgb(0,0,200),Color.rgb(255,222,0)};
     private Random ran = new Random();
     private int undrawn=0;
+    private int lives=10;
 
 
 
@@ -67,7 +68,7 @@ public class BrickView extends View {
         mPaint = new Paint();
         mPaddle = new Paddle(200,650);
         mBall = new Ball(270,380);
-        mBoard=new ScoreBoard(300,30);
+        mBoard=new ScoreBoard(75,30);
 
 
 
@@ -80,7 +81,7 @@ public class BrickView extends View {
 
 
         dx=ran.nextInt(2)+1;
-        dy=ran.nextInt(4)+2;
+        dy=ran.nextInt(3)+4;
 
 
         setOnTouchListener(new OnTouchListener() {
@@ -108,7 +109,22 @@ public class BrickView extends View {
         mPaint.setColor(colorArray[3]);
         mBall.draw(canvas, mPaint);
         mPaint.setColor(Color.rgb(0,0,0));
-        mBoard.draw(canvas,mPaint,score);
+        mBoard.draw(canvas,mPaint,score,level,lives);
+
+        if (undrawn==10){
+            undrawn=0;
+            level+=1;
+            for (int i=0;i<nRows;i++){
+                for(int j=0;j<nCols; j++) {
+                    brickArray[i][j].resetDraw();
+                }
+            }
+            mBall.setLocation(mPaddle.getX()+50,mPaddle.getY());
+            dx+=1;
+            dy+=1;
+        }
+
+
 
         for (int i=0;i<nRows;i++){
             for(int j=0;j<nCols; j++) {
@@ -116,7 +132,6 @@ public class BrickView extends View {
                 brickArray[i][j].draw(canvas, mPaint);
             }
         }
-
 
         mBall.move(dx,dy);//move ball
 
@@ -132,9 +147,17 @@ public class BrickView extends View {
 
         }
         //too far up or down
-        if (mBall.getY()<=0||mBall.getY()>=getHeight()){
+        if (mBall.getY()<=0){
             dy=-dy;
         }
+        if (mBall.getY()>=getHeight()){
+            mBall.setLocation(mPaddle.getX()+50,mPaddle.getY());
+            lives=lives-1;
+            dy=-dy;
+        }
+
+
+
         for (int i=0;i<nRows;i++){
             for(int j=0;j<nCols; j++) {
                 if(brickArray[i][j].isTouched(mBall.getX(),mBall.getY())){
@@ -143,6 +166,8 @@ public class BrickView extends View {
                 }
             }
         }
+
+
 
         postInvalidateOnAnimation();
 
