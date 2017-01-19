@@ -29,6 +29,8 @@ public class WelcomeActivity extends AppCompatActivity {
         Intent newIntent = new Intent(this, MainActivity.class);
         newIntent.putExtra("username",username);
         startActivity(newIntent);
+
+
     }
 
 

@@ -174,7 +174,6 @@ public class BrickView extends View {
         levelThreeArray[0]=brick0;
 
     }
-
     //<--PLAYS GAME-->
     @Override
     protected void onDraw(Canvas canvas) {
@@ -275,11 +274,12 @@ public class BrickView extends View {
         Intent newIntent = new Intent(this.getContext(), GameOver.class);
         // to pass username on to gameOver layout
         newIntent.putExtra("username",username);
+        newIntent.putExtra("totalScore",score);
         this.getContext().startActivity(newIntent);
     }
 
-    public int getScore(){
-        return score;
+    public void setUserName(String name){
+        username = name;
     }
 
     public int randomX(){
