@@ -8,20 +8,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-
-        </activity>
-        <activity android:name=".WelcomeActivity" >
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".WelcomeActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"></action>
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
-        <activity
+        </activity>
+        <activity android:name=".GameOver"/>
             android:name=".Level1"
             android:label="@string/title_activity_level1"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

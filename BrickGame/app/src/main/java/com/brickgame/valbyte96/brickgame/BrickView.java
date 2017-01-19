@@ -2,6 +2,7 @@ package com.brickgame.valbyte96.brickgame;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -20,6 +21,7 @@ import java.util.Random;
 
 public class BrickView extends View {
 
+    private String username;
 
     private Paint mPaint;
     private Paddle mPaddle;
@@ -261,9 +263,23 @@ public class BrickView extends View {
 
             }
         }
-
-
+        
+        if(mBall.getY() > mPaddle.getY() + 7){
+            //Log.d("below", String.valueOf(mBall.getY()));
+            gameOver();
+        }
         postInvalidateOnAnimation();
-
     }
+
+    private void gameOver(){
+        Intent newIntent = new Intent(this.getContext(), GameOver.class);
+        // to pass username on to gameOver layout
+        newIntent.putExtra("username",username);
+        this.getContext().startActivity(newIntent);
+    }
+
+    public int getScore(){
+        return score;
+    }
+
 }
