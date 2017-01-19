@@ -27,11 +27,11 @@ public class BrickView extends View {
     private ScoreBoard mBoard;
     private float dx;
     private float dy;
-    private int score =0;
-    private int nRows=5;
-    private int nCols=6;
-    private int level =1;
-    private Brick[][] brickArray=new Brick[nRows][nCols];
+    private int score = 0;
+    private int nRows = 5;
+    private int nCols = 6;
+    private int level = 1;
+    private Brick[][] brickArray = new Brick[nRows][nCols];
     private Brick[] levelTwoArray = new Brick[42];
     private int[] colorArray={Color.rgb(200,0,0),Color.rgb(0,200,0),Color.rgb(0,0,200),Color.rgb(255,222,0)};
     private Random ran = new Random();
@@ -70,7 +70,6 @@ public class BrickView extends View {
         mPaddle = new Paddle(200,650);
         mBall = new Ball(250,630);
         mBoard=new ScoreBoard(75,30);
-
 
 
         //SET UP LEVEL 1
@@ -262,7 +261,6 @@ public class BrickView extends View {
 
             }
         }
-
 
 
         postInvalidateOnAnimation();
