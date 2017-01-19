@@ -20,9 +20,7 @@ import java.util.Random;
  */
 
 public class BrickView extends View {
-
     private String username;
-
     private Paint mPaint;
     private Paddle mPaddle;
     private Ball mBall;
@@ -35,15 +33,15 @@ public class BrickView extends View {
     private int level = 1;
     private Brick[][] brickArray = new Brick[nRows][nCols];
     private Brick[] levelTwoArray = new Brick[42];
+    private Brick[] levelThreeArray = new Brick[1];//GOHERE
     private int[] colorArray={Color.rgb(200,0,0),Color.rgb(0,200,0),Color.rgb(0,0,200),Color.rgb(255,222,0)};
     private Random ran = new Random();
     private int undrawn=0;
-    private int lives=10;
+    private int lives=5;
 
 
 
-
-
+    //<---CONSTRUCTORS-->
     public BrickView(Context context) {
         super(context);
         init();
@@ -66,8 +64,9 @@ public class BrickView extends View {
         init();
     }
 
+    //<---INITIALIZER-->
     private void init(){
-
+        //initialize objects
         mPaint = new Paint();
         mPaddle = new Paddle(200,650);
         mBall = new Ball(250,630);
@@ -75,19 +74,18 @@ public class BrickView extends View {
 
 
         //SET UP LEVEL 1
-        for(int i =0; i<nRows; i++) {
-            for (int j = 0; j < nCols; j++) {
-                Brick brick = new Brick(j * 90 + 15, i * 60+50, ran.nextInt(4));
-                brickArray[i][j] = brick;
-            }
-        }
+        levelOneSetUp();
+
+        //SET UP LEVEL 2
         levelTwoSetUp();
 
+        levelThreeSetUp();
 
-        dx=ran.nextInt(2)+1;
-        dy=ran.nextInt(3)+4;
+        //initialize speeds
+        dx=randomX();
+        dy=randomY();
 
-
+        //SET UP TOUCH LISTENER
         setOnTouchListener(new OnTouchListener() {
            @Override
            public boolean onTouch(View v, MotionEvent motionEvent) {
@@ -95,7 +93,6 @@ public class BrickView extends View {
                    return true;
                }
                if (motionEvent.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                   Log.d("test", "x: " + motionEvent.getX() + ", y: " + motionEvent.getY());
                    mPaddle.move(motionEvent.getX());
                    return true;
                }
@@ -104,6 +101,17 @@ public class BrickView extends View {
          }
        );
    }
+
+    //<--LEVEL SET UP-->
+    //sets up level 1
+    public void levelOneSetUp(){
+        for(int i =0; i<nRows; i++) {
+            for (int j = 0; j < nCols; j++) {
+                Brick brick = new Brick(j * 90 + 15, i * 60+50, ran.nextInt(4));
+                brickArray[i][j] = brick;
+            }
+        }
+    }
 
     //sets up level 2
     public void levelTwoSetUp(){
@@ -160,115 +168,107 @@ public class BrickView extends View {
             Brick brick = new Brick(53+3*122, 175+50*i, 0);
             levelTwoArray[i+38]=brick;
         }
-
-
-
-
-
-
-
-
+    }
+    public void levelThreeSetUp(){
+        Brick brick0 = new Brick(2 * 72 + 52, 50, 0);
+        levelThreeArray[0]=brick0;
 
     }
 
+    //<--PLAYS GAME-->
     @Override
     protected void onDraw(Canvas canvas) {
-        //draw circle and rectangle
-        mPaint.setColor(colorArray[2]);
-        mPaddle.draw(canvas,mPaint);
-        mPaint.setColor(colorArray[3]);
-        mBall.draw(canvas, mPaint);
-        mPaint.setColor(Color.rgb(0,0,0));
-        mBoard.draw(canvas,mPaint,score,level,lives);
-
-        if (undrawn==30&&level==1||undrawn==42&&level==2){
-            dx+=1;
-            dy+=1;
-            undrawn=0;
-            level+=1;
-            for (int i=0;i<nRows;i++){
-                for(int j=0;j<nCols; j++) {
-                    brickArray[i][j].resetDraw();
-                }
-            }
-            mBall.setLocation(mPaddle.getX()+50,mPaddle.getY());
+        //increments levels and resets ball
+        if (undrawn == 30 && level == 1 || undrawn == 42 && level == 2) {
+            dx += 1;
+            dy += 1;
+            undrawn = 0;
+            level += 1;
+            mBall.setLocation(mPaddle.getX() + 50, mPaddle.getY());
 
         }
-
-        //DRAW THE BOARD
-        if(level==1){
-
-            //draw the object
-            for (int i=0;i<nRows;i++){
-                for(int j=0;j<nCols; j++) {
-                    mPaint.setColor(colorArray[brickArray[i][j].getColor()]);
-                    brickArray[i][j].draw(canvas, mPaint);
-                }
-            }
-
+        if(level==4){ //check to see if user has won
+            gameOver();//@TODO change this to user wins
         }
-        else if (level==2){
-            for (int i=0; i<levelTwoArray.length;i++){
-                mPaint.setColor(Color.rgb(191,239,0));
-                levelTwoArray[i].draw(canvas, mPaint);
-
-            }
-
-        }
-
-
-
-
-
-        mBall.move(dx,dy);//move ball
-
-        //conditions for reflecting
-        //checks to see if it has hit the paddle
-        if (mPaddle.reflect(mBall.getX(),mBall.getY())){
-            dy=-dy;
-            score+=100;
-        }
-        //too far left or right
-        if (mBall.getX()<=0||mBall.getX()>=getWidth()){
-            dx=-dx;
-
-        }
-        //too far up or down
-        if (mBall.getY()<=0){
-            dy=-dy;
-        }
-        if (mBall.getY()>=getHeight()){
-            mBall.setLocation(mPaddle.getX()+50,mPaddle.getY());
-            lives=lives-1;
-            dy=-dy;
-        }
-
-
-        if (level==1){
-            for (int i=0;i<nRows;i++) {
-                for (int j = 0; j < nCols; j++) {
-                    if (brickArray[i][j].isTouched(mBall.getX(), mBall.getY())) {
-                        score += 200;
-                        undrawn += 1;
-                    }
-                }
-            }
-        }
-        else if(level==2){
-            for (int i=0;i<levelTwoArray.length;i++){
-                if (levelTwoArray[i].isTouched(mBall.getX(), mBall.getY())) {
-                    score += 200;
-                    undrawn += 1;
-                }
-
-            }
-        }
-        
-        if(mBall.getY() > mPaddle.getY() + 7){
-            //Log.d("below", String.valueOf(mBall.getY()));
+        else if(lives<0){//check to see if user has lost
             gameOver();
         }
-        postInvalidateOnAnimation();
+        else {//play the game
+            //draw paddle, ball, and board
+            mPaint.setColor(colorArray[2]);
+            mPaddle.draw(canvas, mPaint);
+            mPaint.setColor(colorArray[3]);
+            mBall.draw(canvas, mPaint);
+            mPaint.setColor(Color.rgb(0, 0, 0));
+            mBoard.draw(canvas, mPaint, score, level, lives);
+
+
+            //DRAW THE BOARD
+            if (level == 1) {
+                //draw the object
+                for (int i = 0; i < nRows; i++) {
+                    for (int j = 0; j < nCols; j++) {
+                        mPaint.setColor(colorArray[brickArray[i][j].getColor()]);
+                        brickArray[i][j].draw(canvas, mPaint);
+                    }
+                }
+
+            } else if (level == 2) {
+                for (int i = 0; i < levelTwoArray.length; i++) {
+                    mPaint.setColor(Color.rgb(191, 239, 0));
+                    levelTwoArray[i].draw(canvas, mPaint);
+                }
+            }
+
+
+            mBall.move(dx, dy);//move ball
+
+            //REFLECTING CONDITIONS
+            //checks to see if it has hit the paddle
+            if (mPaddle.reflect(mBall.getX(), mBall.getY())) {
+                dy = -dy;
+                score += 100;
+            }
+            //too far left or right
+            if (mBall.getX() <= 0 || mBall.getX() >= getWidth()) {
+                dx = -dx;
+
+            }
+            //too far up or down
+            if (mBall.getY() <= 0) {
+                dy = -dy;
+            }
+            if (mBall.getY() >= getHeight()) {
+                mBall.setLocation(mPaddle.getX() + 50, mPaddle.getY());
+                lives = lives - 1;
+                dy = -dy;
+            }
+
+            //BRICK CONDITIONS
+            if (level == 1) {
+                for (int i = 0; i < nRows; i++) {
+                    for (int j = 0; j < nCols; j++) {
+                        if (brickArray[i][j].isTouched(mBall.getX(), mBall.getY())) {
+                            score += 200;
+                            undrawn += 1;
+                            dx = -randomX();
+                            dy = -randomY();
+                        }
+                    }
+                }
+            } else if (level == 2) {
+                for (int i = 0; i < levelTwoArray.length; i++) {
+                    if (levelTwoArray[i].isTouched(mBall.getX(), mBall.getY())) {
+                        score += 200;
+                        undrawn += 1;
+                        dx = -randomX();
+                        dy = -randomY();
+                    }
+
+                }
+            }
+            postInvalidateOnAnimation();
+        }
     }
 
     private void gameOver(){
@@ -281,5 +281,20 @@ public class BrickView extends View {
     public int getScore(){
         return score;
     }
+
+    public int randomX(){
+        Random ran = new Random();
+        return ran.nextInt(2)+1;
+
+    }
+    public int randomY(){
+        Random ran = new Random();
+        return ran.nextInt(3)+4;
+
+
+
+    }
+
+
 
 }
