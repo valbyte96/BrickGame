@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.Random;
+
 /**
  * Created by demouser on 1/17/17.
  */
@@ -19,18 +21,22 @@ import android.view.View;
 public class BrickView extends View {
 
 
-    private Paint bgPaint;
-    private Paint brickPaint;
-    private Paint bPaint;
+    private Paint mPaint;
     private Paddle mPaddle;
     private Ball mBall;
     private ScoreBoard mBoard;
     private float dx;
     private float dy;
-    private int score;
+    private int score =0;
     private int nRows=5;
     private int nCols=6;
+    private int level =1;
     private Brick[][] brickArray=new Brick[nRows][nCols];
+    private int[] colorArray={Color.rgb(200,0,0),Color.rgb(0,200,0),Color.rgb(0,0,200),Color.rgb(255,222,0)};
+    private Random ran = new Random();
+    private int undrawn=0;
+
+
 
 
 
@@ -57,12 +63,8 @@ public class BrickView extends View {
     }
 
     private void init(){
-        bgPaint = new Paint();
-        bgPaint.setColor(Color.rgb(0,0,0));
-        bPaint = new Paint();
-        bPaint.setColor(Color.rgb(200,0,0));
-        brickPaint = new Paint();
 
+        mPaint = new Paint();
         mPaddle = new Paddle(200,650);
         mBall = new Ball(270,380);
         mBoard=new ScoreBoard(300,30);
@@ -71,15 +73,14 @@ public class BrickView extends View {
 
         for(int i =0; i<nRows; i++) {
             for (int j = 0; j < nCols; j++) {
-                Brick brick = new Brick(j * 90 + 15, i * 60+50, 1);
+                Brick brick = new Brick(j * 90 + 15, i * 60+50, ran.nextInt(4));
                 brickArray[i][j] = brick;
             }
         }
 
 
-        score=0;
-        dx=2; //@TODO change to random ints
-        dy=2;
+        dx=ran.nextInt(2)+1;
+        dy=ran.nextInt(4)+2;
 
 
         setOnTouchListener(new OnTouchListener() {
@@ -102,14 +103,17 @@ public class BrickView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         //draw circle and rectangle
-        canvas.drawRect(mPaddle.getX(),mPaddle.getY(),mPaddle.getX()+100,mPaddle.getY()+50,bgPaint);
-        canvas.drawCircle(mBall.getX(),mBall.getY(),15,bPaint);
-        mBoard.draw(canvas,bgPaint,score);
-
+        mPaint.setColor(colorArray[2]);
+        mPaddle.draw(canvas,mPaint);
+        mPaint.setColor(colorArray[3]);
+        mBall.draw(canvas, mPaint);
+        mPaint.setColor(Color.rgb(0,0,0));
+        mBoard.draw(canvas,mPaint,score);
 
         for (int i=0;i<nRows;i++){
             for(int j=0;j<nCols; j++) {
-                brickArray[i][j].draw(canvas, bPaint);
+                mPaint.setColor(colorArray[brickArray[i][j].getColor()]);
+                brickArray[i][j].draw(canvas, mPaint);
             }
         }
 
@@ -118,8 +122,7 @@ public class BrickView extends View {
 
         //conditions for reflecting
         //checks to see if it has hit the paddle
-        if (mBall.getX()>=mPaddle.getX()&&mBall.getX()<=mPaddle.getX()+100&&
-                mBall.getY()>=mPaddle.getY()&&mBall.getY()<=mPaddle.getY()+50){
+        if (mPaddle.reflect(mBall.getX(),mBall.getY())){
             dy=-dy;
             score+=100;
         }
@@ -136,12 +139,10 @@ public class BrickView extends View {
             for(int j=0;j<nCols; j++) {
                 if(brickArray[i][j].isTouched(mBall.getX(),mBall.getY())){
                     score+=200;
+                    undrawn+=1;
                 }
-
-
             }
         }
-
 
         postInvalidateOnAnimation();
 
