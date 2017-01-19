@@ -174,7 +174,6 @@ public class BrickView extends View {
         levelThreeArray[0]=brick0;
 
     }
-
     //<--PLAYS GAME-->
     @Override
     protected void onDraw(Canvas canvas) {
