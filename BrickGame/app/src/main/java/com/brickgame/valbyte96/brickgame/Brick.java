@@ -12,11 +12,13 @@ public class Brick {
     private float x;
     private float y;
     private int color;
+    private boolean drawn;
 
     public Brick(float x, float y, int color){
         this.x = x;
         this.y = y;
         this.color = color;
+        this.drawn=true;
     }
 
     public float getX(){
@@ -31,7 +33,20 @@ public class Brick {
         return this.color;
     }
 
+    public boolean isTouched(float bX, float bY){
+        if (this.drawn==false){
+            return false;
+        }
+        if (bX>=x&&bX<=x+60&& bY>=y&&bY<=y+40){
+            this.drawn=false;
+            return true;
+        }
+        return false;
+    }
+
     public void draw(Canvas canvas, Paint paint){
-        canvas.drawRect(x,y,x+60,y+40,paint);
+        if(drawn) {
+            canvas.drawRect(x, y, x + 60, y + 40, paint);
+        }
     }
 }

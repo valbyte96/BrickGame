@@ -132,6 +132,15 @@ public class BrickView extends View {
         if (mBall.getY()<=0||mBall.getY()>=getHeight()){
             dy=-dy;
         }
+        for (int i=0;i<nRows;i++){
+            for(int j=0;j<nCols; j++) {
+                if(brickArray[i][j].isTouched(mBall.getX(),mBall.getY())){
+                    score+=200;
+                }
+
+
+            }
+        }
 
 
         postInvalidateOnAnimation();
