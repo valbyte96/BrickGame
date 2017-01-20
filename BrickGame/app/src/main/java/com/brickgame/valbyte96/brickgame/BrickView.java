@@ -33,7 +33,7 @@ public class BrickView extends View {
     private int score = 0;
     private int nRows = 5;
     private int nCols = 6;
-    private int level = 1;
+    private int level = 3;
     private Brick[][] brickArray = new Brick[nRows][nCols];
     private Brick[] levelTwoArray = new Brick[42];
     private Brick[] levelThreeArray = new Brick[1];//GOHERE
@@ -74,10 +74,12 @@ public class BrickView extends View {
 
         //initialize objects
         mPaint = new Paint();
-        mPaddle = new Paddle(200,650,getContext());
+        mPaddle = new Paddle(200,650,getContext(),colorArray);
         mBall = new Ball(250,630);
         mBoard=new ScoreBoard(75,30);
         vib=(Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        mp = MediaPlayer.create(getContext(), R.raw.small);
+
 
 
         //SET UP LEVEL 1
@@ -195,7 +197,7 @@ public class BrickView extends View {
             mBall.setLocation(mPaddle.getX() + 50, mPaddle.getY());
 
         }
-        if(level==3){ //check to see if user has won
+        if(level==4){ //check to see if user has won
             gameWon();//@TODO change this to user wins
         }
         else if(lives<0){//check to see if user has lost
@@ -209,7 +211,6 @@ public class BrickView extends View {
             mBall.draw(canvas, mPaint);
             mPaint.setColor(Color.rgb(0, 0, 0));
             mBoard.draw(canvas, mPaint, score, level, lives);
-            mp = MediaPlayer.create(getContext(), R.raw.small);
 
 
 
@@ -290,6 +291,7 @@ public class BrickView extends View {
             } else if (level == 2) {
                 for (int i = 0; i < levelTwoArray.length; i++) {
                     if (levelTwoArray[i].isTouched(mBall.getX(), mBall.getY())) {
+                     //   mp.start();
                         score += 200;
                         undrawn += 1;
                         if(dx<0){
