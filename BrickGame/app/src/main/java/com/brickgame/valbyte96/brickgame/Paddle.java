@@ -67,7 +67,6 @@ public class Paddle {
     public boolean reflect(float bX, float bY){
 
         if (bX>=x&&bX<=x+200&& bY>=y&&bY<=y+50){
-           // v.vibrate(100);
             return true;
         }
         return false;

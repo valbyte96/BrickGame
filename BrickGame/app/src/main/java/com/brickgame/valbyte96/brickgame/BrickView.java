@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -84,9 +82,8 @@ public class BrickView extends View {
         mBall = new Ball(250,630);
         mBoard=new ScoreBoard(75,30);
         vib=(Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-//        mp = MediaPlayer.create(getContext(), R.raw.small);
         sSoundPool = new SoundPool.Builder().build();
-       ID = sSoundPool.load(getContext(), R.raw.small, 0);
+        ID = sSoundPool.load(getContext(), R.raw.small, 0);
 
 
 
@@ -302,7 +299,7 @@ public class BrickView extends View {
             }
 
 
-            mBall.move(dx, dy);//move ball
+          //  mBall.move(dx, dy);//move ball
 
             //REFLECTING CONDITIONS
             //checks to see if it has hit the paddle
@@ -424,8 +421,6 @@ public class BrickView extends View {
     public int randomX(){
         Random ran = new Random();
         return ran.nextInt(2)+2+level;
-
-
     }
     public int randomY(){
         Random ran = new Random();
