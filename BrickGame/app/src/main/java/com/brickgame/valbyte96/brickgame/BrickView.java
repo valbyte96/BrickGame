@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Build;
 import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
@@ -42,22 +43,26 @@ public class BrickView extends View {
     private int undrawn=0;
     private int lives=10;
     private Vibrator vib;
-//    private MediaPlayer mp;
+    private static SoundPool sSoundPool;
+    private int ID;
 
 
 
     //<---CONSTRUCTORS-->
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public BrickView(Context context) {
         super(context);
         init();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public BrickView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public BrickView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
@@ -70,6 +75,7 @@ public class BrickView extends View {
     }
 
     //<---INITIALIZER--->
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void init(){
 
         //initialize objects
@@ -79,6 +85,8 @@ public class BrickView extends View {
         mBoard=new ScoreBoard(75,30);
         vib=(Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
 //        mp = MediaPlayer.create(getContext(), R.raw.small);
+        sSoundPool = new SoundPool.Builder().build();
+       ID = sSoundPool.load(getContext(), R.raw.small, 0);
 
 
 
@@ -88,6 +96,7 @@ public class BrickView extends View {
         //SET UP LEVEL 2
         levelTwoSetUp();
 
+        //SET UP LEVEL 3
         levelThreeSetUp();
 
         //initialize speeds
@@ -249,9 +258,10 @@ public class BrickView extends View {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
         if(level==4){ //check to see if user has won
-            gameWon();//@TODO change this to user wins
+            gameWon();
         }
         else if(lives<0){//check to see if user has lost
             gameOver();
@@ -327,7 +337,7 @@ public class BrickView extends View {
                 for (int i = 0; i < nRows; i++) {
                     for (int j = 0; j < nCols; j++) {
                         if (brickArray[i][j].isTouched(mBall.getX(), mBall.getY())) {
-//                            mp.start();
+                            sSoundPool.play(ID,1.0f, 1.0f, 0, 0, 1.0f);
                             score += 200;
                             undrawn += 1;
                             if(dx<0){
@@ -348,7 +358,7 @@ public class BrickView extends View {
             } else if (level == 2) {
                 for (int i = 0; i < levelTwoArray.length; i++) {
                     if (levelTwoArray[i].isTouched(mBall.getX(), mBall.getY())) {
-                     //   mp.start();
+                        sSoundPool.play(ID,1.0f, 1.0f, 0, 0, 1.0f);
                         score += 200;
                         undrawn += 1;
                         if(dx<0){
@@ -370,7 +380,7 @@ public class BrickView extends View {
             else if (level == 3) {
                 for (int i = 0; i < levelThreeArray.length; i++) {
                     if (levelThreeArray[i].isTouched(mBall.getX(), mBall.getY())) {
-                        //   mp.start();
+                        sSoundPool.play(ID,1.0f, 1.0f, 0, 0, 1.0f);
                         score += 200;
                         undrawn += 1;
                         if(dx<0){
