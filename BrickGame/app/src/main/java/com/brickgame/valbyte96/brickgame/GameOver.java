@@ -30,10 +30,11 @@ public class GameOver extends AppCompatActivity {
         totalScore = intent.getIntExtra("totalScore",0);
 
         TextView textView1 = (TextView) findViewById(R.id.userName);
-        textView1.setText(username);
-
-        TextView textView2 = (TextView) findViewById(R.id.totalScore);
-        textView2.setText(totalScore + "");
+        if(username.length() == 0){
+            textView1.setText("Your score is : " + totalScore + "");
+        } else {
+            textView1.setText(username + " your score is : " + totalScore + "");
+        }
     }
 
     private void start(){
