@@ -238,23 +238,23 @@ public class BrickView extends View {
         levelThreeArray[22]=brick22;
         Brick brick23 = new Brick(-1 * 72 + 52+115, 300, colorArray[1]);
         levelThreeArray[23]=brick23;
-
-
-
-
     }
 
     //<--PLAYS GAME-->
     @Override
     protected void onDraw(Canvas canvas) { //GOHERE
         //increments levels and resets ball
-        if (undrawn == 30 && level == 1 || undrawn == 42 && level == 2||undrawn==24&&level==3) {
+        if (undrawn == 3 && level == 1 || undrawn == 3 && level == 2||undrawn==3 && level==3) {
             dx += 1;
             dy += 1;
             undrawn = 0;
             level += 1;
             mBall.setLocation(mPaddle.getX() + 50, mPaddle.getY());
-
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
         if(level==4){ //check to see if user has won
@@ -349,8 +349,6 @@ public class BrickView extends View {
                             else if(dy>0){
                                 dy = -randomY();
                             }
-
-
                         }
                     }
                 }
@@ -411,6 +409,7 @@ public class BrickView extends View {
 
     private void gameWon(){
         Intent newIntent = new Intent(this.getContext(), WinActivity.class);
+        newIntent.putExtra("username", username);
         this.getContext().startActivity(newIntent);
     }
 

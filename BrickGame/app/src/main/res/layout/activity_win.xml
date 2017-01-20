@@ -11,7 +11,7 @@
     tools:context="com.brickgame.valbyte96.brickgame.WinActivity">
 
     <TextView
-        android:text="Congratulations!"
+        android:text="Congratulations"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -23,7 +23,19 @@
         android:textColor="#C80000"/>
 
     <TextView
-        android:text="You Won"
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/congrats"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:id="@+id/userName"
+        android:textStyle="normal|italic"
+        android:textSize="36sp"
+        android:textColor="#C80000"/>
+
+    <TextView
+        android:text="You Won!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="83dp"
