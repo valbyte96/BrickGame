@@ -30,7 +30,7 @@ public class BrickView extends View {
     private int score = 0;
     private int nRows = 5;
     private int nCols = 6;
-    private int level = 3;
+    private int level = 1;
     private Brick[][] brickArray = new Brick[nRows][nCols];
     private Brick[] levelTwoArray = new Brick[42];
     private Brick[] levelThreeArray = new Brick[1];//GOHERE
@@ -180,7 +180,7 @@ public class BrickView extends View {
     @Override
     protected void onDraw(Canvas canvas) { //GOHERE
         //increments levels and resets ball
-        if (undrawn == 2 && level == 1 || undrawn == 2 && level == 2) {
+        if (undrawn == 30 && level == 1 || undrawn == 42 && level == 2) {
             dx += 1;
             dy += 1;
             undrawn = 0;
@@ -259,8 +259,16 @@ public class BrickView extends View {
                         if (brickArray[i][j].isTouched(mBall.getX(), mBall.getY())) {
                             score += 200;
                             undrawn += 1;
-                            dx =randomX();
-                            dy =randomY();
+                            if(dx >0){ // reflect ball from top of brick
+                                dx =-randomX();
+                            } else {   //reflex ball from bottom of brick
+                                dx = randomX();
+                            }
+                            if(dy >0){   //reflex ball from bottom of brick
+                                dy =-randomY();
+                            } else{ //reflex ball from bottom of brick
+                                dy =randomY();
+                            }
                         }
                     }
                 }
